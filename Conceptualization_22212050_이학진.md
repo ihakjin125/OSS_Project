@@ -2,7 +2,7 @@
 
 
 **Student NO:** 22212050
-**Name: *** 이학진
+**Name:** 이학진
 **E-mail:** ihakjin125@gmail.com
 
 ---
