@@ -13,18 +13,18 @@
 ## [ Revision history ]
 | Revision date | Version | Description | Author |
 | :--- | :--- | :--- | :---|
-| 2026-03-26 | 0.0.1 | Initial Conceptualization Draft | 이학진 |
+| 2026-03-26 | 1.0.0 | First Document | 이학진 |
 
 ---
 
 ##  Contents 
-1. Business purpose
-2. System context diagram
-3. Use case list
-4. Concept of operation
-5. Problem statement
-6. Glossary
-7. References
+1. [Business purpose](#1-business-purpose)
+2. [System context diagram](#2-system-context-diagram)
+3. [Use case list](#3-use-case-list)
+4. [Concept of operation](#4-concept-of-operation)
+5. [Problem statement](#5-problem-statement)
+6. [Glossary](#6-glossary)
+7. [References](#7-references)
 
 
 ## 1. Business purpose
