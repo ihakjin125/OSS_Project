@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatToWear - 옷 등록</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="main-body">
+
+<nav class="navbar">
+    <a href="wardrobe.html" class="nav-item active">옷장</a>
+    <a href="main.html" class="nav-item">홈</a>
+    <a href="mypage.html" class="nav-item">마이</a>
+</nav>
+
+<div class="container main-container">
+    <div class="wardrobe-card">
+
+        <div class="header-with-back">
+            <a href="wardrobe.html" class="back-btn">←</a>
+            <h2>➕ 새로운 옷 등록</h2>
+        </div>
+
+        <form id="addClothesForm" class="add-clothes-form">
+
+            <div class="input-group">
+                <label>옷 이름</label>
+                <input type="text" id="clothesName" placeholder="예: 무지 반팔 티셔츠" required>
+            </div>
+
+            <div class="input-group">
+                <label>카테고리</label>
+                <div class="inline-radio-group">
+                    <input type="radio" id="cat-top" name="category" value="TOP" checked>
+                    <label for="cat-top">상의</label>
+
+                    <input type="radio" id="cat-bottom" name="category" value="BOTTOM">
+                    <label for="cat-bottom">하의</label>
+
+                    <input type="radio" id="cat-outer" name="category" value="OUTER">
+                    <label for="cat-outer">아우터</label>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>두께</label>
+                <div class="inline-radio-group">
+                    <input type="radio" id="thick-thin" name="thickness" value="THIN">
+                    <label for="thick-thin">얇음</label>
+
+                    <input type="radio" id="thick-normal" name="thickness" value="NORMAL" checked>
+                    <label for="thick-normal">보통</label>
+
+                    <input type="radio" id="thick-thick" name="thickness" value="THICK">
+                    <label for="thick-thick">두꺼움</label>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>TPO 태그</label>
+                <div class="inline-radio-group">
+                    <input type="radio" id="tpo-workout" name="tpo" value="WORKOUT">
+                    <label for="tpo-workout">🏃 운동</label>
+
+                    <input type="radio" id="tpo-daily" name="tpo" value="DAILY" checked>
+                    <label for="tpo-daily">🎒 일상</label>
+
+                    <input type="radio" id="tpo-formal" name="tpo" value="FORMAL">
+                    <label for="tpo-formal">👔 격식</label>
+                </div>
+            </div>
+
+            <button type="submit" class="main-action-btn" style="margin-top: auto;">옷장에 저장</button>
+        </form>
+
+    </div>
+</div>
+
+<script>
+    document.getElementById('addClothesForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // 1. 입력된 값들 수집
+        const name = document.getElementById('clothesName').value;
+        const category = document.querySelector('input[name="category"]:checked').value;
+        const thickness = document.querySelector('input[name="thickness"]:checked').value;
+        const tpo = document.querySelector('input[name="tpo"]:checked').value;
+
+        // 아이콘 매칭 (심미성을 위해)
+        let icon = "👕";
+        if (category === "BOTTOM") icon = "👖";
+        if (category === "OUTER") icon = "🧥";
+
+        const newItem = {
+            name: `${icon} ${name}`,
+            category: category,
+            thickness: thickness,
+            tpo: tpo
+        };
+
+        // 2. 기존 옷 목록 가져오기 (없으면 기본 3개 초기화)
+        let clothes = JSON.parse(localStorage.getItem('user_clothes'));
+
+        if (clothes === null) {
+            // 아직 한 번도 저장/삭제를 안 했다면 기본 리스트를 먼저 만듦
+            clothes = [
+                { name: "👕 흰 반팔", category: "TOP" },
+                { name: "👖 검정 슬랙스", category: "BOTTOM" },
+                { name: "🧥 두꺼운 패딩", category: "OUTER" }
+            ];
+        }
+
+        // 3. 새 아이템 추가 및 저장
+        clothes.push(newItem);
+        localStorage.setItem('user_clothes', JSON.stringify(clothes));
+
+        alert('새로운 옷이 옷장에 등록되었습니다!');
+
+        // 4. 옷장 리스트로 이동
+        window.location.href = 'wardrobe.html';
+    });
+</script>
+</body>
+</html>

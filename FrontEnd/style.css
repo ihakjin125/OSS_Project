@@ -1,0 +1,676 @@
+/* 1. 기본 초기화 */
+/* 1. 기본 초기화 및 전체 스크롤 숨김 */
+html, body {
+    /* 브라우저 전체 스크롤바 숨기기 (Firefox, IE/Edge) */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    /* 내용이 넘치더라도 전체 페이지 스크롤바는 생기지 않게 방어 */
+    overflow-x: hidden;
+}
+
+/* 크롬, 사파리, 엣지 전체 스크롤바 숨김 */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    display: none;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Pretendard', sans-serif;
+}
+
+body {
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0; /* 여백 제거 */
+}
+
+.container {
+    width: 100%;
+    max-width: 900px;
+    padding: 20px;
+}
+
+/* ★ 2. 전 화면 공통 카드 스타일 (앱 컨테이너) ★ */
+.login-card, .join-card, .main-card, .wardrobe-card {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    height: 680px;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+
+    /* ★ 스크롤바 숨기기 (Firefox, IE/Edge) ★ */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+/* ★ 스크롤바 숨기기 (Chrome, Safari, Edge) ★ */
+.login-card::-webkit-scrollbar,
+.join-card::-webkit-scrollbar,
+.main-card::-webkit-scrollbar,
+.wardrobe-card::-webkit-scrollbar {
+    display: none;
+}
+
+.logo {
+    color: #333;
+    font-size: 32px;
+    margin-bottom: 10px;
+    font-weight: 800;
+    text-align: center;
+}
+
+.subtitle {
+    color: #888;
+    margin-bottom: 40px;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* 3. 폼 & 입력창 공통 스타일 */
+.input-group {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 6px;
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background-color: #fafafa;
+    outline: none;
+    transition: 0.3s;
+}
+
+input:focus {
+    border-color: #333;
+    background-color: #fff;
+}
+
+.login-btn, .join-btn, .main-action-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+.login-btn:hover, .join-btn:hover, .main-action-btn:hover {
+    background-color: #000;
+}
+
+.extra-links {
+    margin-top: 25px;
+    font-size: 13px;
+    color: #999;
+    text-align: center;
+}
+
+.extra-links a {
+    color: #333;
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+/* 4. 체질 설정 & 메인 화면(TPO) 라디오 버튼 */
+.radio-group {
+    margin-bottom: 20px;
+}
+
+.radio-option {
+    margin-bottom: 12px;
+}
+
+.radio-option input[type="radio"] {
+    display: none;
+}
+
+.radio-option label {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    background-color: #fafafa;
+    color: #555;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.radio-option label:hover {
+    border-color: #ccc;
+    background-color: #f0f0f0;
+}
+
+.radio-option input[type="radio"]:checked + label {
+    background-color: #333;
+    border-color: #333;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* 5. 네비게이션 & 메인 화면 전용 */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    padding: 20px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    z-index: 100;
+}
+
+.nav-item {
+    color: #888;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.nav-item:hover {
+    color: #333;
+}
+
+.nav-item.active {
+    color: #333;
+    font-weight: 800;
+    border-bottom: 2px solid #333;
+    padding-bottom: 5px;
+}
+
+.main-body {
+    align-items: flex-start;
+    padding-top: 100px;
+}
+
+.temp-display {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.temp-display h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #111;
+}
+
+.recommendation-box {
+    background-color: #f8f9fa;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 25px 20px;
+    margin-top: 30px;
+    text-align: left;
+}
+
+.clothes-result {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.weather-tip {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.5;
+}
+
+.feedback-btn {
+    background-color: #e9ecef;
+    color: #555;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.feedback-btn:hover {
+    background-color: #dde0e3;
+    color: #333;
+}
+
+/* 6. 옷장 화면 전용 옷 */
+.wardrobe-header {
+    margin-bottom: 25px;
+}
+
+.wardrobe-header h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.add-clothes-btn {
+    display: block;
+    margin-left: auto;
+    background-color: #f1f3f5;
+    color: #555;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.add-clothes-btn:hover {
+    background-color: #333;
+    color: #fff;
+}
+
+.clothes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+    margin-top: 10px;
+
+    /* ★ 리스트 내 스크롤바 숨기기 ★ */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.clothes-list::-webkit-scrollbar {
+    display: none;
+}
+
+.clothes-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fafafa;
+    border: 1px solid #eee;
+    padding: 16px 20px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.clothes-item:hover {
+    border-color: #ccc;
+    background-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+}
+
+.clothes-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.more-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #aaa;
+    cursor: pointer;
+    padding: 0 5px;
+    transition: 0.3s;
+}
+
+.more-btn:hover {
+    color: #333;
+}
+
+/* ★ 7. Mobile View (반응형) ★ */
+@media (max-width: 480px) {
+    .login-card, .join-card, .main-card, .wardrobe-card {
+        padding: 30px 20px;
+        box-shadow: none;
+        background-color: transparent;
+        height: auto;
+    }
+
+    .main-body {
+        padding-top: 20px;
+        padding-bottom: 80px;
+    }
+
+    .navbar {
+        top: auto;
+        bottom: 0;
+        padding: 15px 0;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        gap: 40px;
+    }
+
+    .nav-item {
+        font-size: 16px;
+    }
+}
+
+/* 8. 옷 등록 화면 전용 옷 */
+.header-with-back {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.back-btn {
+    position: absolute;
+    left: 0;
+    font-size: 24px;
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+    z-index: 10;
+}
+
+.back-btn:hover {
+    color: #888;
+}
+
+.header-with-back h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #111;
+    text-align: center;
+    width: 100%;
+    margin: 0;
+}
+
+.add-clothes-form {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow-y: auto;
+    /* 스크롤바 숨기기 */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.add-clothes-form::-webkit-scrollbar { display: none; }
+
+.inline-radio-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.inline-radio-group input[type="radio"] {
+    display: none;
+}
+
+.inline-radio-group label {
+    flex: 1;
+    padding: 12px 5px;
+    border: 1px solid #eee;
+    border-radius: 20px;
+    background-color: #fafafa;
+    color: #555;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.inline-radio-group label:hover {
+    border-color: #ccc;
+    background-color: #f0f0f0;
+}
+
+.inline-radio-group input[type="radio"]:checked + label {
+    background-color: #333;
+    border-color: #333;
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 9. 피드백 팝업 (모달) 스타일 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(3px);
+}
+
+.modal-content {
+    background-color: #fff;
+    width: 90%;
+    max-width: 400px;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-content h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    line-height: 1.4;
+    word-break: keep-all;
+}
+
+.modal-subtitle {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 25px;
+}
+
+.radio-group.vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.close-modal-btn {
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 14px;
+    margin-top: 15px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.close-modal-btn:hover {
+    color: #333;
+}
+
+/*  10. 마이페이지 전용 스타일 */
+.mypage-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.welcome-msg {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 40px;
+    color: #111;
+}
+
+.user-name {
+    color: #333;
+    border-bottom: 2px solid #333;
+}
+
+.info-section {
+    margin-bottom: 35px;
+}
+
+.info-label {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 8px;
+}
+
+.info-value {
+    color: #333;
+    font-weight: 700;
+}
+
+.location-name {
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+.constitution-slider-wrapper {
+    margin: 20px auto;
+    width: 80%;
+    position: relative;
+}
+
+.slider-track {
+    height: 4px;
+    background-color: #333;
+    border-radius: 2px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.slider-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: #333;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.slider-dot.blue { background-color: #4A90E2; }
+.slider-dot.red { background-color: #FF5A5F; }
+/* 1. 보통(Center) 점: 기본 스타일과 시인성 개선 한 번에 정의 */
+.slider-dot.center {
+    width: 18px;
+    height: 18px;
+    border: 3px solid #ddd; /* 시인성을 위한 회색 테두리 */
+    background-color: #333;
+    position: relative;
+    z-index: 2; /* 다른 점들보다 살짝 위로 */
+}
+
+/* 2. 선택된 상태: 원래 색상을 유지하면서 크기와 테두리만 강조 */
+.slider-dot.active {
+    transform: scale(1.6); /* 크기 대폭 확대 */
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.4); /* 떠 있는 느낌의 그림자 */
+    border: 3px solid #000 !important; /* 검정색 테두리로 확실한 구분 */
+    z-index: 5; /* 가장 최상단에 표시 */
+    transition: all 0.3s ease;
+}
+
+.mypage-buttons {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 20px;
+}
+
+.sub-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: #f1f3f5;
+    color: #555;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.sub-btn:hover {
+    background-color: #e9ecef;
+    color: #111;
+}
+
+.logout-link {
+    background: none;
+    border: none;
+    color: #aaa;
+    font-size: 13px;
+    margin-top: 10px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.logout-link:hover {
+    color: #FF5A5F;
+}
+
+/* 기온 수동 수정 버튼 (연필 아이콘) */
+.edit-temp-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: 8px;
+    vertical-align: middle;
+    transition: transform 0.2s ease;
+}
+
+.edit-temp-btn:hover {
+    transform: scale(1.2);
+}

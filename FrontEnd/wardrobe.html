@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatToWear - 내 옷장</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="main-body">
+
+<nav class="navbar">
+    <a href="wardrobe.html" class="nav-item active">옷장</a>
+    <a href="main.html" class="nav-item">홈</a>
+    <a href="mypage.html" class="nav-item">마이</a>
+</nav>
+
+<div class="container main-container">
+    <div class="wardrobe-card">
+
+        <div class="wardrobe-header">
+            <h2>👗 내 옷장 관리</h2>
+            <button class="add-clothes-btn" onclick="location.href='add_clothes.html'">+ 새로운 옷 등록하기</button>
+        </div>
+
+        <div class="clothes-list" id="clothes-container">
+            <div class="clothes-item">
+                <span class="clothes-name">데이터를 불러오는 중...</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // 1. 기본 옷 목록을 변수로 따로 정의합니다.
+    const defaultClothes = [
+        { name: "👕 흰 반팔", category: "top" },
+        { name: "👖 검정 슬랙스", category: "bottom" },
+        { name: "🧥 두꺼운 패딩", category: "outer" }
+    ];
+
+    // 현재 데이터를 가져오는 공통 함수
+    function getClothes() {
+        const saved = localStorage.getItem('user_clothes');
+        // 저장된 게 아예 없으면(null) 기본 리스트를 반환하고, 있으면 저장된 걸 반환
+        if (saved === null) return defaultClothes;
+        return JSON.parse(saved);
+    }
+
+    window.onload = function() {
+        const clothes = getClothes();
+        const container = document.getElementById('clothes-container');
+        container.innerHTML = '';
+
+        clothes.forEach((item, index) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'clothes-item';
+            itemDiv.innerHTML = `
+                <span class="clothes-name">${item.name}</span>
+                <button class="more-btn" onclick="deleteCloth(${index})">⋮</button>
+            `;
+            container.appendChild(itemDiv);
+        });
+    };
+
+    function deleteCloth(index) {
+        if(confirm("이 옷을 옷장에서 삭제할까요?")) {
+            let clothes = getClothes(); // 현재 목록(기본값 또는 저장값)을 가져옴
+
+            clothes.splice(index, 1); // 클릭한 녀석 '하나만' 삭제
+
+            // 변경된 리스트를 저장 (이제부터는 기본값이 아닌 이 저장값을 사용하게 됨)
+            localStorage.setItem('user_clothes', JSON.stringify(clothes));
+            location.reload();
+        }
+    }
+</script>
+</body>
+</html>

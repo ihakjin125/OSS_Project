@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatToWear - 체질 설정</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <div class="login-card">
+
+        <div class="header-with-back">
+            <a href="javascript:history.back()" class="back-btn">←</a>
+            <h1 class="logo" style="font-size: 28px; width: 100%; margin: 0;">체질 설정</h1>
+        </div>
+
+        <p class="subtitle">평소 추위나 더위를 얼마나 타시나요?</p>
+
+        <form id="constitutionForm">
+            <div class="radio-option">
+                <input type="radio" id="very-cold" name="temp-pref" value="-2" required>
+                <label for="very-cold">❄️ 매우 춥게 느낌</label>
+            </div>
+            <div class="radio-option">
+                <input type="radio" id="cold" name="temp-pref" value="-1">
+                <label for="cold">🧊 조금 춥게 느낌</label>
+            </div>
+            <div class="radio-option">
+                <input type="radio" id="normal" name="temp-pref" value="0">
+                <label for="normal">☁️ 보통 / 잘 모름</label>
+            </div>
+            <div class="radio-option">
+                <input type="radio" id="hot" name="temp-pref" value="1">
+                <label for="hot">☀️ 조금 덥게 느낌</label>
+            </div>
+            <div class="radio-option">
+                <input type="radio" id="very-hot" name="temp-pref" value="2">
+                <label for="very-hot">🔥 덥게 느낌</label>
+            </div>
+
+            <button type="submit" class="login-btn" style="margin-top: 30px;">설정 완료</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('constitutionForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const selected = document.querySelector('input[name="temp-pref"]:checked').value;
+
+        // 추가: 선택한 체질 값을 브라우저에 임시 저장 (나중에 추천 로직에 사용)
+        localStorage.setItem('user_constitution', selected);
+
+        alert('체질 설정이 완료되었습니다!');
+        window.location.href = './main.html';
+    });
+</script>
+</body>
+</html>

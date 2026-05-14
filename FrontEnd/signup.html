@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatToWear - 회원가입</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <div class="join-card">
+        <h1 class="logo">WhatToWear</h1>
+        <p class="subtitle">새로운 계정을 만들어보세요.</p>
+
+        <form id="joinForm">
+            <div class="input-group">
+                <label>닉네임</label>
+                <input type="text" id="nickname" placeholder="사용하실 닉네임을 입력하세요" required>
+            </div>
+            <div class="input-group">
+                <label>ID</label>
+                <input type="text" id="loginId" placeholder="아이디를 입력하세요" required>
+            </div>
+            <div class="input-group">
+                <label>PW</label>
+                <input type="password" id="password" placeholder="비밀번호를 입력하세요" required>
+            </div>
+            <div class="input-group">
+                <label>위치 정보</label>
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="location" placeholder="주소를 입력하세요" required readonly>
+                    <button type="button" class="sub-btn" style="width: 80px; margin-top: 0;" onclick="alert('주소 검색 API 연동 예정')">검색</button>
+                </div>
+            </div>
+
+            <button type="submit" class="join-btn">회원가입 완료</button>
+        </form>
+
+        <div class="extra-links">
+            <p>이미 계정이 있으신가요? <a href="index.html">로그인하기</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('joinForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // 기획서: 닉네임 저장 후 체질 설정 화면으로 이동
+        const nickname = document.getElementById('nickname').value;
+        localStorage.setItem('nickname', nickname);
+
+        alert('회원가입 성공! 초기 체질 설정 화면으로 이동합니다.');
+        window.location.href = "constitution.html";
+    });
+</script>
+</body>
+</html>
