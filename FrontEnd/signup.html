@@ -43,15 +43,45 @@
 </div>
 
 <script>
-    document.getElementById('joinForm').addEventListener('submit', function(e) {
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
         e.preventDefault();
 
-        // 기획서: 닉네임 저장 후 체질 설정 화면으로 이동
+        const loginId = document.getElementById('userId').value;
+        const password = document.getElementById('passwd').value;
+        const passwordConfirm = document.getElementById('passwordConfirm').value;
         const nickname = document.getElementById('nickname').value;
-        localStorage.setItem('nickname', nickname);
+        const location = document.getElementById('location').value;
 
-        alert('회원가입 성공! 초기 체질 설정 화면으로 이동합니다.');
-        window.location.href = "constitution.html";
+        if(password !== passwordConfirm){
+            alert('비밀번호가 일치하지 않습니다.');
+            return;
+        }
+
+        const memberData = {
+            loginId: loginId,
+            password: password,
+            nickname: nickname,
+            location: location
+        };
+
+        fetch('/api/members/signup',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(memberData)
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    throw new Error('회원가입에 실패했습니다.');
+                }
+            })
+            .catch(error => {
+                alert(error.message);
+                console.error('Error:', error);
+            });
     });
 </script>
 </body>
