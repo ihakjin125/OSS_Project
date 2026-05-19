@@ -20,7 +20,14 @@
             <h2 class="welcome-msg">안녕하세요! <span class="user-name" id="display-nickname">회원</span>님!</h2>
 
             <div class="info-section">
-                <p class="info-label">현재 내 체질 : <span class="info-value" id="display-constitution">보통 / 잘 모름</span></p>
+                <div class="constitution-info-box" style="margin-bottom: 15px;">
+                    <p class="info-label" style="font-size: 14px; color: #777; margin-bottom: 4px;">
+                        기본 체질 : <span class="info-value" id="display-base-constitution" style="font-weight: normal;">보통 / 잘 모름</span>
+                    </p>
+                    <p class="info-label" style="font-size: 16px;">
+                        현재 내 체질 : <span class="info-value" id="display-constitution" style="font-weight: bold; color: #333;">보통 / 잘 모름</span>
+                    </p>
+                </div>
 
                 <div class="constitution-slider-wrapper">
                     <div class="slider-track">
@@ -54,21 +61,24 @@
             document.getElementById('display-nickname').innerText = savedNickname;
         }
 
-        const savedConst = localStorage.getItem('user_constitution') || "0"; // 기본값 보통(0)
+        // 가입 시 설정한 최초 '기본 체질' (변하지 않는 값)
+        const baseConst = localStorage.getItem('base_constitution') || "0";
+
+        // 피드백 학습을 거쳐 계산된 최신의 '현재 내 체질' (슬라이더 및 주요 표시에 활용)
+        const savedConst = localStorage.getItem('user_constitution') || "0";
 
         // 1. 모든 점의 활성화 클래스 제거 (초기화)
         document.querySelectorAll('.slider-dot').forEach(dot => {
             dot.classList.remove('active');
         });
 
-        // 2. 현재 체질에 해당하는 점에 'active' 클래스 추가
-        // ID가 dot--2, dot-0 이런 식으로 되어 있으므로 맞춰서 호출
+        // 2. 현재 내 체질에 해당하는 점에 'active' 클래스 추가
         const activeDot = document.getElementById('dot-' + savedConst);
         if (activeDot) {
             activeDot.classList.add('active');
         }
 
-        // 3. 텍스트 표시 업데이트
+        // 3. 텍스트 표시 매핑 데이터
         const constText = {
             "-2": "❄️ 매우 추위를 많이 탐",
             "-1": "🧊 추위를 조금 탐",
@@ -76,6 +86,9 @@
             "1": "☀️ 더위를 조금 탐",
             "2": "🔥 더위를 매우 많이 탐"
         };
+
+        // 4. 각각의 영역에 텍스트 주입
+        document.getElementById('display-base-constitution').innerText = constText[baseConst];
         document.getElementById('display-constitution').innerText = constText[savedConst];
     };
 

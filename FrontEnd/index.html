@@ -27,5 +27,40 @@
         </div>
     </div>
 </div>
+<script>
+    document.getElementById('loginForm').addEventListener('submit', function(e){
+        e.preventDefault();
+
+        const loginId = document.getElementById('loginId').value;
+        const password = document.getElementById('password').value;
+
+        fetch(`/api/members/login?loginId=${loginId}&password=${password}`, {
+            method: 'POST'
+        })
+            // 1. response.text() 대신 response.json()으로 데이터를 읽어옵니다.
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("로그인 실패");
+                }
+                return response.json();
+            })
+            .then(data => {
+                // 2. 백엔드가 보낸 웰컴 메시지 출력
+                alert(data.message);
+
+                // 3. 로컬 스토리지에 아이디, 닉네임, 체질 가중치를 각각 소중히 저장합니다.
+                localStorage.setItem('loggedInUser', loginId);
+                localStorage.setItem('nickname', data.nickname);
+                localStorage.setItem('user_constitution', data.constitution);
+
+                // 4. 메인 화면으로 이동
+                window.location.href = 'main.html';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('아이디 또는 비밀번호가 틀렸거나 서버 통신 오류입니다.');
+            });
+    });
+</script>
 </body>
 </html>

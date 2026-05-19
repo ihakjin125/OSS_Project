@@ -103,41 +103,96 @@
 </div>
 
 <script>
-    // 페이지 로드 시 닉네임과 체질 정보 불러오기
+    // 1. 페이지 로드 시 로그인한 유저 아이디 가져오기
     window.onload = function() {
-        const savedNickname = localStorage.getItem('nickname');
-        const savedConstitution = localStorage.getItem('user_constitution');
+        const loggedInUser = localStorage.getItem('loggedInUser');
 
-        if (savedNickname) {
-            document.getElementById('user-nickname').innerText = savedNickname;
+        // 로그인을 안 하고 주소창에 메인 화면을 치고 들어온 경우 쫓아내기
+        if (!loggedInUser) {
+            alert("로그인이 필요합니다!");
+            window.location.href = 'index.html';
+            return;
         }
 
-        console.log("현재 로그인 유저:", savedNickname);
-        console.log("유저 체질 가중치:", savedConstitution);
+        // 환영 메시지에 아이디 띄워주기 (나중엔 닉네임을 가져오도록 수정 가능)
+        const nicknameElement = document.getElementById('user-nickname');
+        if(nicknameElement) {
+            nicknameElement.innerText = loggedInUser;
+        }
+
+        console.log("현재 로그인 유저:", loggedInUser);
     };
 
-    // 추천받기 로직
+    // 2. 오늘의 옷차림 추천받기 로직 (백엔드 연동)
     document.getElementById('recommendForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        const tpo = document.querySelector('input[name="tpo"]:checked').value;
-        const constitution = localStorage.getItem('user_constitution') || 0;
 
-        alert(`TPO(${tpo})와 체질 가중치(${constitution})를 반영하여 옷차림을 계산합니다!`);
-        // 여기서 나중에 진짜 추천 알고리즘 결과로 텍스트를 바꿔줄 수 있습니다.
-        document.getElementById('recommend-result').innerText = "추천 계산 완료!";
+        const loginId = localStorage.getItem('loggedInUser');
+        const tpo = document.querySelector('input[name="tpo"]:checked').value;
+        const currentTemp = document.getElementById('current-temp').innerText;
+
+        // 백엔드 RecommendationController 의 getRecommendation API 호출
+        fetch(`/api/recommendations?loginId=${loginId}&temperature=${currentTemp}&tpo=${tpo}`, {
+            method: 'GET'
+        })
+            .then(response => {
+                if (!response.ok) throw new Error("추천을 가져오는데 실패했습니다.");
+                return response.text();
+            })
+            .then(message => {
+                // 백엔드에서 준 추천 결과 텍스트를 화면에 꽂아줌
+                document.getElementById('recommend-result').innerText = message;
+                alert("추천이 완료되었습니다!");
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert(error.message);
+            });
     });
 
-    // 모달 제어
+    // 3. 모달 제어 (기존과 동일)
     function openModal() { document.getElementById('feedbackModal').style.display = 'flex'; }
     function closeModal() { document.getElementById('feedbackModal').style.display = 'none'; }
     document.querySelector('.feedback-btn').onclick = openModal;
 
+    // 4. 피드백 전송 로직 (백엔드 연동)
     document.getElementById('feedbackForm').onsubmit = function(e) {
         e.preventDefault();
-        alert('피드백이 반영되었습니다. 데이터베이스에 가중치를 업데이트합니다!');
-        closeModal();
+
+        const loginId = localStorage.getItem('loggedInUser');
+        const score = document.querySelector('input[name="feedback-pref"]:checked').value;
+        const currentTemp = document.getElementById('current-temp').innerText;
+
+        // 백엔드로 보낼 피드백 포장
+        const feedbackData = {
+            loginId: loginId,
+            tempAtTime: parseFloat(currentTemp),
+            score: parseInt(score)
+        };
+
+        // 백엔드 MemberController (또는 FeedbackController)의 피드백 API 호출
+        fetch('/api/members/feedback', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(feedbackData)
+        })
+            .then(response => {
+                if (!response.ok) throw new Error("피드백 전송 실패");
+                return response.text();
+            })
+            .then(message => {
+                alert(message); // "피드백이 반영되어 체질 가중치가 업데이트되었습니다."
+                closeModal();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert(error.message);
+            });
     };
 
+    // 5. 기온 수동 변경 (기존과 동일)
     function editTemperature() {
         let newTemp = prompt("현재 기온을 숫자로 직접 입력해주세요 (예: 22):", "");
         if (newTemp !== null && newTemp.trim() !== "" && !isNaN(newTemp)) {
